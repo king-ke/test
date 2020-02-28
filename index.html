@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  用户：<input type="text" class="user">
+  <span class="ts"></span>
+
+  <script>
+    var user = document.getElementsByClassName("user")[0]
+    var ts = document.getElementsByClassName("ts")[0]
+
+    user.onchange = function(){
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function(){
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          console.log(xhr.responseText) //响应的文本
+          if(xhr.responseText == 0){
+            user.style.color = "red";
+            ts.innerHTML = "该用户名以经被注册"
+            ts.style.color = "red";
+          }else if(xhr.responseText == 1){
+            user.style.color = "green";
+            ts.innerHTML = "该用户名可以被使用"
+            ts.style.color = "green"
+          }
+        }
+      }
+      xhr.open("GET","/reg?username=" + user.value,true);
+      xhr.send(null)
+    }
+  </script>
+</body>
+</html>
